@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Dashboard</h2>
+
+<div class="row">
+
+<div class="col-md-4">
+<div class="card p-4 shadow text-center">
+<h5>Total Donors</h5>
+<h2>{{ donors }}</h2>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card p-4 shadow text-center">
+<h5>Total Blood Units</h5>
+<h2>{{ stock }}</h2>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card p-4 shadow text-center">
+<h5>Total Requests</h5>
+<h2>{{ requests }}</h2>
+</div>
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Donation History</h2>
+
+<table class="table table-bordered">
+
+<tr class="table-danger">
+<th>Donor Name</th>
+<th>Blood Group</th>
+<th>Date</th>
+<th>Units</th>
+</tr>
+
+{% for h in data %}
+<tr>
+<td>{{ h[0] }}</td>
+<td>{{ h[1] }}</td>
+<td>{{ h[2] }}</td>
+<td>{{ h[3] }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

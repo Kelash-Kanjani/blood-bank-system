@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Blood Stock</h2>
+
+<table class="table table-bordered">
+
+<tr class="table-danger">
+<th>Blood Group</th>
+<th>Units</th>
+<th>Expiry Date</th>
+</tr>
+
+{% for s in data %}
+<tr>
+<td>{{ s[0] }}</td>
+<td>{{ s[1] }}</td>
+<td>{{ s[2] }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

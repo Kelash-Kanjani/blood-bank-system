@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Add Donor</h2>
+
+<form method="POST" class="card p-4 shadow">
+
+<!-- NEW / EXISTING -->
+<select id="donorType" name="donor_type" class="form-control mb-3">
+<option value="new">New Donor</option>
+<option value="old">Existing Donor</option>
+</select>
+
+<!-- DONOR ID -->
+<input id="donorCode" name="donor_code"
+class="form-control mb-3"
+placeholder="Enter Donor ID (only for existing donor)">
+
+<!-- NAME -->
+<input id="name" name="name"
+class="form-control mb-3"
+placeholder="Donor Name">
+
+<!-- BLOOD GROUP -->
+<select id="bloodGroup" name="blood_group"
+class="form-control mb-3">
+
+<option value="">Select Blood Group</option>
+<option>A+</option>
+<option>A-</option>
+<option>B+</option>
+<option>B-</option>
+<option>O+</option>
+<option>O-</option>
+<option>AB+</option>
+<option>AB-</option>
+
+</select>
+
+<!-- UNITS -->
+<input name="units"
+type="number"
+class="form-control mb-3"
+placeholder="Units"
+required>
+
+<button class="btn btn-danger">Submit</button>
+
+</form>
+
+<!-- SEARCH -->
+<input type="text" id="searchInput"
+class="form-control mt-4"
+placeholder="Search donor by ID or name...">
+
+<h3 class="mt-3">Donor List</h3>
+
+<table class="table table-bordered">
+
+<tr>
+<th>Donor ID</th>
+<th>Name</th>
+<th>Blood Group</th>
+<th>Action</th>
+</tr>
+
+{% for d in donors %}
+<tr>
+
+<td><b>{{ d[1] }}</b></td>
+<td>{{ d[2] }}</td>
+<td>{{ d[3] }}</td>
+
+<td>
+<a href="/delete/{{ d[0] }}" class="btn btn-danger btn-sm">
+Delete
+</a>
+</td>
+
+</tr>
+{% endfor %}
+
+</table>
+
+
+<script>
+
+// elements
+let donorType = document.getElementById("donorType");
+let donorCode = document.getElementById("donorCode");
+let nameField = document.getElementById("name");
+let bloodGroup = document.getElementById("bloodGroup");
+
+// toggle fields
+function toggleFields() {
+
+    if (donorType.value === "new") {
+
+        donorCode.disabled = true;
+
+        nameField.disabled = false;
+        bloodGroup.disabled = false;
+
+    } else {
+
+        donorCode.disabled = false;
+
+        nameField.disabled = true;
+        bloodGroup.disabled = true;
+    }
+}
+
+donorType.addEventListener("change", toggleFields);
+toggleFields();
+
+
+// FETCH EXISTING DONOR
+donorCode.addEventListener("input", async function () {
+
+    if (donorType.value === "old") {
+
+        let code = donorCode.value;
+
+        if (code.length > 3) {
+
+            let res = await fetch("/get_donor/" + code);
+            let data = await res.json();
+
+            if (!data.error) {
+                nameField.value = data.name;
+                bloodGroup.value = data.blood_group;
+            }
+        }
+    }
+});
+
+
+// SEARCH FUNCTION
+document.getElementById("searchInput").addEventListener("keyup", function() {
+
+    let value = this.value.toLowerCase();
+    let rows = document.querySelectorAll("table tr");
+
+    rows.forEach((row, index) => {
+
+        if (index === 0) return;
+
+        let text = row.innerText.toLowerCase();
+
+        row.style.display = text.includes(value) ? "" : "none";
+    });
+});
+
+</script>
+
+{% endblock %}
